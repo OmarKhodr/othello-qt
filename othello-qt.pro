@@ -1,5 +1,8 @@
+QT+=widgets
+
 HEADERS += \
-    main.h
+    othello.h
 
 SOURCES += \
-    main.cpp
+    main.cpp \
+    othello.cpp
