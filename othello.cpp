@@ -22,12 +22,12 @@ Othello::Othello() {
     turn = 0;
 }
 
-QVector<QPair<int, int>*>* Othello::playableCells() {
-    QVector<QPair<int, int>*>* res = new QVector<QPair<int, int>*>();
+QVector<QPair<int, int>> Othello::playableCells() {
+    QVector<QPair<int, int>> res;
 
     for (int i=0; i<8; i++) {
         for (int j=0; j<8; j++) {
-            if (canPlay(i, j)) res->append(new QPair<int, int>(i, j));
+            if (canPlay(i, j)) res.append( QPair<int, int>(i, j));
         }
     }
 
@@ -35,6 +35,11 @@ QVector<QPair<int, int>*>* Othello::playableCells() {
 }
 
 bool Othello::canPlay(int x, int y) {
+
+    if (board->at(x)->at(y)!=-1){
+        return false;
+    }
+
     QPair<int, int> dirs[8] = {
         QPair<int,int>(-1, -1),
         QPair<int,int>(-1, 0),
@@ -101,14 +106,14 @@ int Othello::play(int x, int y) {
     }
 
     turn = 1-turn;
-    if (playableCells()->size() == 0) turn = 1-turn;
+    if (playableCells().size() == 0) turn = 1-turn;
 
     return turn;
 }
 
 bool Othello::isGameOver() {
     // Check if current player's turn has any valid moves
-    if (playableCells()->size() == 0) return true;
+    if (playableCells().size() == 0) return true;
 
     // If any cells are empty then game *not* over
     for (int i=0; i<8; i++) {

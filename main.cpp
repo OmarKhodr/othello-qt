@@ -1,5 +1,5 @@
 #include<QApplication>
-#include<othello.h>
+#include <othelloview.h>
 #include<QMainWindow>
 #include <iostream>
 
@@ -9,11 +9,14 @@ int main(int argc, char** argv){
 
     QApplication app(argc, argv);
 
+    othelloView* view = new othelloView();
+    view->show();
+
+    /*
     QTextStream in(stdin);
     QTextStream out(stdout);
 
     Othello othello;
-
     while (!othello.isGameOver()) {
         othello.print();
         cout << (othello.turn == 1 ? "White" : "Black") << "'s turn. Choose move: " << endl;
@@ -24,6 +27,7 @@ int main(int argc, char** argv){
         else othello.play(i, j);
     }
     out << "Winner is " << othello.winner();
+    */
 
     return app.exec();
 }

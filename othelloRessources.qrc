@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>imagesOthello/800by952grid.png</file>
+        <file>imagesOthello/blueChip90by90.png</file>
+        <file>imagesOthello/greenPlus90by90.png</file>
+        <file>imagesOthello/redChip90by90.png</file>
+    </qresource>
+</RCC>
