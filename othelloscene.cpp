@@ -1,5 +1,9 @@
 #include "othelloscene.h"
 
+/**
+ * @brief othelloScene::othelloScene, constuctor that sets the scene
+ * @file othelloscene.h
+ */
 othelloScene::othelloScene()
 {
     setupBackground();
@@ -8,13 +12,20 @@ othelloScene::othelloScene()
 
 }
 
+/**
+ * @brief othelloScene::setupBackground, sets the background image of the scene.
+ * @file othelloscene.h
+ */
 void othelloScene::setupBackground(){
     setBackgroundBrush(QBrush(QImage(":/imagesOthello/800by952grid.png").scaledToWidth(800).scaledToHeight(952)));
     setSceneRect(0, 0, 800, 952);
     setFocus();
 }
 
-
+/**
+ * @brief othelloScene::setupWidgets, sets up the turn labels
+ * @file othelloscene.h
+ */
 void othelloScene::setupWidgets(){
     playerTurnLabel = new QLabel("PLayer turn: ");
     playerLabel = new QLabel("");
@@ -29,12 +40,24 @@ void othelloScene::setupWidgets(){
 }
 
 
+/**
+ * @brief othelloScene::setupUpdateTimer
+ * @file othelloscene.h
+ * Sets the timer that updates the scene at each timeout.
+ */
 void othelloScene::setupUpdateTimer(){
     updateTimer = new QTimer();
     QObject::connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateScene()));
     updateTimer->start(100);
 }
 
+
+/**
+ * @brief othelloScene::updateScene
+ * @file othelloscene.h
+ * Slot that gets called at timer timeout, sets the current player turn, calls update to the cells
+ * and to the available greenplus cells, and anounces winner when game is over.
+ */
 void othelloScene::updateScene(){
     // show which player's turn it is
 
@@ -80,6 +103,13 @@ void othelloScene::updateScene(){
 
 
 // QMouseEvent function
+/**
+ * @brief othelloScene::mousePressEvent
+ * @param event
+ * @file othelloscene.h
+ * When the player clicks left click on the mouse, it takes the coordinate of the mouse position when it was clicked
+ * and checks if position is valid to insert the player's disk to the board.
+ */
 void othelloScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
     if (event->button() == Qt::LeftButton){
         int indexI;
@@ -108,6 +138,11 @@ void othelloScene::mousePressEvent(QGraphicsSceneMouseEvent *event){
 }
 
 
+/**
+ * @brief othelloScene::addPlayableCells
+ * @file othelloscene.h
+ * Adds the pixmap green plus items to the available positions.
+ */
 void othelloScene::addPlayableCells(){
 
     // start by removing the previous greenplus items
@@ -132,7 +167,11 @@ void othelloScene::addPlayableCells(){
 
 }
 
-
+/**
+ * @brief othelloScene::updateCells
+ * @file othelloscene.h
+ * Updates the red and blue chips in the scene.
+ */
 void othelloScene::updateCells(){
     // start by removing the previous colored cells
     if (listOfUsedCells.size()!=0){

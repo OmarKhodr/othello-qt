@@ -2,6 +2,11 @@
 
 #include "othelloscene.h"
 
+/**
+ * @brief othelloView::othelloView
+ * @file othelloview.h
+ * Constructor that adds the othelloscene to the view.
+ */
 othelloView::othelloView()
 {
     setFixedSize(800, 952);
@@ -14,6 +19,10 @@ othelloView::othelloView()
     centerWindow();
 }
 
+/**
+ * @brief othelloView::centerWindow, centers window to the middle of the screen
+ * @file othelloview.h
+ */
 void othelloView::centerWindow(){
     setGeometry(
         QStyle::alignedRect(

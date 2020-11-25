@@ -3,6 +3,11 @@
 
 using namespace std;
 
+/**
+ * @brief Othello::Othello, constructor
+ * @file othello.h
+ * Constructor that sets the initial state of the board and what player starts the game.
+ */
 Othello::Othello() {
 
     board = new QVector<QVector<int>*>();
@@ -22,6 +27,12 @@ Othello::Othello() {
     turn = 0;
 }
 
+
+/**
+ * @brief Othello::playableCells, returns the coordinates of the cells that are playable.
+ * @return QVector<QPair<int, int>>
+ * @file othello.h
+ */
 QVector<QPair<int, int>> Othello::playableCells() {
     QVector<QPair<int, int>> res;
 
@@ -34,6 +45,15 @@ QVector<QPair<int, int>> Othello::playableCells() {
     return res;
 }
 
+
+/**
+ * @brief Othello::canPlay
+ * @param x
+ * @param y
+ * @return bool
+ * @file othello.h
+ * Checks if the cell at corrdinates (x,y) is available to be played.
+ */
 bool Othello::canPlay(int x, int y) {
 
     if (board->at(x)->at(y)!=-1){
@@ -66,6 +86,14 @@ bool Othello::canPlay(int x, int y) {
     return false;
 }
 
+/**
+ * @brief Othello::play
+ * @param x
+ * @param y
+ * @return turn
+ * @file othello.h
+ * Adds a chip to the (x,y) coordinate on the grid.
+ */
 int Othello::play(int x, int y) {
     board->at(x)->replace(y, turn);
 
@@ -111,6 +139,13 @@ int Othello::play(int x, int y) {
     return turn;
 }
 
+
+/**
+ * @brief Othello::isGameOver
+ * @return bool
+ * @file othello.h
+ * Checks if the game is over according to Othello rules
+ */
 bool Othello::isGameOver() {
     // Check if current player's turn has any valid moves
     if (playableCells().size() == 0) return true;
@@ -125,6 +160,13 @@ bool Othello::isGameOver() {
     return true;
 }
 
+
+/**
+ * @brief Othello::winner
+ * @return bool
+ * @file othello.h
+ * Counts the number of blue and red chips at the end of the game and decides the winner.
+ */
 int Othello::winner() {
     int white = 0;
     int black = 0;
@@ -141,6 +183,12 @@ int Othello::winner() {
     else return 0; // Black wins
 }
 
+
+/**
+ * @brief Othello::print
+ * @file othello.h
+ * Prints the state of the board on the console, used for debugging
+ */
 void Othello::print() {
     QTextStream out(stdout);
 
