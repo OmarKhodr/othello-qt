@@ -1,4 +1,7 @@
 #include "othello.h"
+#include <iostream>
+
+using namespace std;
 
 Othello::Othello() {
 
@@ -10,6 +13,7 @@ Othello::Othello() {
         }
         board->append(v);
     }
+
     board->at(3)->replace(3, 1);
     board->at(4)->replace(4, 1);
     board->at(3)->replace(4, 0);
@@ -31,92 +35,73 @@ QVector<QPair<int, int>*>* Othello::playableCells() {
 }
 
 bool Othello::canPlay(int x, int y) {
-    // If none of the adjacent cells are the opposite color or cell is already occupied, invalid
-    int left = y > 0 ? board->at(x)->at(y-1) : -1;
-    int right = y < 7 ? board->at(x)->at(y+1): -1;
-    int top = x > 0 ? board->at(x-1)->at(y) : -1;
-    int bottom = x < 7 ? board->at(x+1)->at(y): -1;
-    int upRight = x > 0 && y < 7 ? board->at(x-1)->at(y+1) : -1;
-    int upLeft = x > 0 && y > 0 ? board->at(x-1)->at(y-1) : -1;
-    int downRight = x < 7 && y < 7 ? board->at(x+1)->at(y+1) : -1;
-    int downLeft = x < 7 && y > 0 ? board->at(x+1)->at(y-1) : -1;
+    QPair<int, int> dirs[8] = {
+        QPair<int,int>(-1, -1),
+        QPair<int,int>(-1, 0),
+        QPair<int,int>(-1, 1),
+        QPair<int,int>(0, -1),
+        QPair<int,int>(0, 1),
+        QPair<int,int>(1, -1),
+        QPair<int,int>(1, 0),
+        QPair<int,int>(1, 1)
+    };
 
-    bool valid = !(board->at(x)->at(y) != -1 ||
-            (left != 1-turn
-            && right != 1-turn
-            && top != 1-turn
-            && bottom != 1-turn
-            && upRight != 1-turn
-            && upLeft != 1-turn
-            && downRight != 1-turn
-            && downLeft != 1-turn));
+    for (QPair<int, int> dir: dirs) {
+        int i = x+dir.first;
+        int j = y+dir.second;
+        if (i<0 || i>=8 || j<0 || j>=8 || board->at(i)->at(j) != 1-turn) continue;
 
-    return valid;
+        while (i>=0 && i<8 && j>=0 && j<8) {
+            if (board->at(i)->at(j) == turn) return true;
+            i += dir.first;
+            j += dir.second;
+        }
+    }
 
-
+    return false;
 }
 
 int Othello::play(int x, int y) {
-    board->at(x)->replace(y, turn); // place piece
+    board->at(x)->replace(y, turn);
 
-    // "flank" horizontally to the right
-    int j = y+1;
-    while (j<8 && board->at(x)->at(j) == 1-turn) {
-        board->at(x)->replace(j, turn);
-        j++;
-    }
-    // "flank" horizontally to the left
-    j = y-1;
-    while (j>=0 && board->at(x)->at(j) == 1-turn) {
-        board->at(x)->replace(j, turn);
-        j--;
-    }
-    // "flank" vertically to the bottom
-    int i = x+1;
-    while (i<8 && board->at(i)->at(y) == 1-turn) {
-        board->at(i)->replace(y, turn);
-        i++;
-    }
-    // "flank" vertically to the top
-    i = x-1;
-    while (i>=0 && board->at(i)->at(y) == 1-turn) {
-        board->at(i)->replace(y, turn);
-        i--;
-    }
-    // "flank" diagonally top-right
-    i = x-1;
-    j = y+1;
-    while (i>=0 && j<8 && board->at(i)->at(j) == 1-turn) {
-        board->at(i)->replace(j, turn);
-        i--;
-        j++;
-    }
-    // "flank" diagonally top-left
-    i = x-1;
-    j = y-1;
-    while (i>=0 && j>=0 && board->at(i)->at(j) == 1-turn) {
-        board->at(i)->replace(j, turn);
-        i--;
-        j--;
-    }
-    // "flank" diagonally bottom-right
-    i = x+1;
-    j = y+1;
-    while (i<8 && j<8 && board->at(i)->at(j) == 1-turn) {
-        board->at(i)->replace(j, turn);
-        i++;
-        j++;
-    }
-    // "flank" diagonally bottom-left
-    i = x+1;
-    j = y-1;
-    while (i<9 && j>=0 && board->at(i)->at(j) == 1-turn) {
-        board->at(i)->replace(j, turn);
-        i++;
-        j--;
+    QPair<int, int> dirs[8] = {
+        QPair<int,int>(-1, -1),
+        QPair<int,int>(-1, 0),
+        QPair<int,int>(-1, 1),
+        QPair<int,int>(0, -1),
+        QPair<int,int>(0, 1),
+        QPair<int,int>(1, -1),
+        QPair<int,int>(1, 0),
+        QPair<int,int>(1, 1)
+    };
+
+    for (QPair<int, int> dir: dirs) {
+        int i = x+dir.first;
+        int j = y+dir.second;
+        if (i<0 || i>=8 || j<0 || j>=8 || board->at(i)->at(j) != 1-turn) continue;
+
+        bool valid = false;
+        while (i>=0 && i<8 && j>=0 && j<8) {
+            if (board->at(i)->at(j) == turn) {
+                valid = true;
+                break;
+            }
+            i += dir.first;
+            j += dir.second;
+        }
+        if (!valid) continue;
+
+        i = x+dir.first;
+        j = y+dir.second;
+        while (i>=0 && i<8 && j>=0 && j<8 && board->at(i)->at(j) == 1-turn) {
+            board->at(i)->replace(j, turn);
+            i += dir.first;
+            j += dir.second;
+        }
     }
 
-    if (playableCells()->size() != 0) turn = 1-turn;
+    turn = 1-turn;
+    if (playableCells()->size() == 0) turn = 1-turn;
 
     return turn;
 }

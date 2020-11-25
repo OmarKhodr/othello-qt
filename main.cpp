@@ -13,6 +13,7 @@ int main(int argc, char** argv){
     QTextStream out(stdout);
 
     Othello othello;
+
     while (!othello.isGameOver()) {
         othello.print();
         cout << (othello.turn == 1 ? "White" : "Black") << "'s turn. Choose move: " << endl;

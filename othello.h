@@ -16,7 +16,9 @@ public:
 
     QVector<QPair<int, int>*>* playableCells();
     bool canPlay(int x, int y);
+    bool canPlay1(int x, int y);
     int play(int x, int y); // returns the player number whose number is next.
+    int play1(int x, int y); // returns the player number whose number is next.
     bool isGameOver();
     int winner();
     void print();
